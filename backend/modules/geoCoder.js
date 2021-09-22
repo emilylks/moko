@@ -3,10 +3,11 @@ const GeoCoder = function(geocoder) {
   this.radius = geocoder.radius;
 }
 
+let API_KEY = "Your_API_KEY";
 // takes an address in string format and returns a geocoded map containing longitude and latitude
 async function getLatitudeLongitude(address) {
   try {
-    let response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyCxiX7MWht1Sbm_7RqCO7Pk0erYpBtrgAs`, {
+    let response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${API_KEY}`, {
       method: 'GET',
     }).then(response => response.json());
 
