@@ -13,8 +13,10 @@ const CartItem = function(cartItem) {
 };
 
 CartItem.create = (cartItem, result) => {
-  let fields = "userID, storeItemID, quantity";
-  let values = "\"" + cartItem.userID + "\",\"" + cartItem.storeID + "\",\"" + cartItem.quantity + "\"";
+  let fields = "userID, storeItemID, storeID, quantity, price, imageUrl, imageName, name, description";
+  let values = "\"" + cartItem.userID + "\",\"" + cartItem.storeItemID + "\",\"" + cartItem.storeID + "\",\"" + 
+		cartItem.quantity + "\",\"" + cartItem.price + "\",\"" + cartItem.imageUrl + "\",\"" + 
+		cartItem.imageName + "\",\"" + cartItem.name + "\",\"" + cartItem.description + "\"";
 
   sql.query("INSERT INTO CART_ITEM(" + fields + ") VALUES(" + values + ")", (err,res) => {
       if (err) {
