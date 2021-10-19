@@ -1,13 +1,4 @@
-import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions
-} from 'react-native';
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -22,9 +13,8 @@ import HomeStack from './HomeStack.js';
 
 const Tab = createBottomTabNavigator();
 
-function UserStack({ navigation }) {
+function UserStack() {
   return (
-
     <Tab.Navigator
         intialRouteName = 'Home'
         screenOptions={{
@@ -46,43 +36,44 @@ function UserStack({ navigation }) {
                   component={HomeStack}
                   options = {{
                     tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons name="home-outline" color={color} size={45} />
+                      <MaterialCommunityIcons name="home-outline" color={color} size={40} />
                      ),
                    }}
-                  />
+      />
       <Tab.Screen name='Cart'
                   component={Cart}
                   options = {{
                     tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons name="cart-outline" color={color} size={40} />
+                      <MaterialCommunityIcons name="cart-outline" color={color} size={35} />
                      ),
                    }}
-                  />
+      />
       <Tab.Screen name='Sell'
                   component={StoreStack}
                   options = {{
                     tabBarIcon: ({ color }) => (
-                      <MaterialCommunityIcons name="storefront" color={color} size={40} />
+                      <MaterialCommunityIcons name="storefront" color={color} size={35} />
                      ),
                    }}
-                  />
+      />
       <Tab.Screen name='Footprint'
                   component={Footprint}
                   options = {{
                     tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons name="leaf" color={color} size={40} />
+                      <MaterialCommunityIcons name="leaf" color={color} size={35} />
                      ),
                    }}
-                  />
-       <Tab.Screen name='Profile'
+      />
+      <Tab.Screen name='Profile'
                   component={Profile}
                   options = {{
                     tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons name="account-outline" color={color} size={40} />
+                      <MaterialCommunityIcons name="account-outline" color={color} size={35} />
                      ),
-                   }}
-                  />
+                  }}
+      />
     </Tab.Navigator>
   );
 }
+
 export default UserStack;

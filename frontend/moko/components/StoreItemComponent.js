@@ -37,8 +37,6 @@ function StoreItemComponent(props) {
     }
   }
 
- 
-
   return(
     <View style={styles.component}>
        <View style={styles.mainContentBox}>
@@ -62,7 +60,7 @@ function StoreItemComponent(props) {
 
             <View style = {{width: 37, height: 35, backgroundColor: '#87B676', marginLeft: -66, alignItems: 'center', justifyContent: 'center'}}>
                 <Text style = {{fontSize: 20, fontWeight: 'bold', color: 'white'}}>{quantity}</Text>
-                
+
             </View>
           </View>
       }

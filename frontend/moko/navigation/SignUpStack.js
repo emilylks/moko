@@ -1,31 +1,21 @@
-import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions
-} from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import LoginScreen from '../screens/UserLogin.js';
 import SignUpScreen from '../screens/SignUp.js';
-
 
 const Stack = createStackNavigator();
 
-function SignUpStack({ navigation }) {
+function SignUpStack() {
   return (
-    <Stack.Navigator initialRouteName="SignUpScreen"
-    screenOptions={{
-        headerShown: false,
-    }}>
-<Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-</Stack.Navigator>
-);
+    <Stack.Navigator initialRouteName="Login"
+                     screenOptions={{
+                        headerShown: false
+                     }}>
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+    </Stack.Navigator>
+  );
 }
+
 export default SignUpStack;

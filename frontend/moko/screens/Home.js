@@ -13,56 +13,36 @@ import {
   TextInput,
   FlatList,
 } from 'react-native';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import firebase from '@react-native-firebase/app';
+import { URLS } from '../constants/resources'
+import { Colours } from '../constants/colours'
 
 function HomeScreen({ navigation }) {
   const { height } = Dimensions.get('window');
   const [search, setSearch] = useState('');
   const [user, setUser] = useState('');
-  const [stores, setStores] = useState([]);
   const [listItems, setListItems] = useState([]);
   const [radius, setRadius] = useState(5);
-  const [withinRadius, setWithinRadius] = useState([]);
-  const isFocused = useIsFocused();
+  const [storesWithinRadius, setStoresWithinRadius] = useState([]);
   const [colorChange, setColorChange] = useState([
       false, false, false, false, false, false, false, false, false, false
   ]);
-
-  const [tags, setTags] = useState([]);
   const [tagItems, setTagItems] = useState([]);
+  const isFocused = useIsFocused();
 
-  useEffect(() => {
-    fetchStores();
-    fetTags();
+  useEffect(async () => {
+    fetchTags();
     fetchUser();
   }, [isFocused]);
 
-
-  function fetchStores() {
-      fetch('http://ec2-13-57-28-56.us-west-1.compute.amazonaws.com:3000/stores', {
-          method: 'GET',
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-          setStores(responseJson);
-          setListItems(responseJson);
-          console.log(responseJson);
-      })
-      .catch((error) => {
-          console.log(error)
-      })
-  }
-
-  function fetTags() {
-    fetch('http://ec2-13-57-28-56.us-west-1.compute.amazonaws.com:3000/tags', {
+  function fetchTags() {
+    fetch(`${URLS.serverUrl}/tags`, {
         method: 'GET',
     })
     .then((response) => response.json())
     .then((responseJson) => {
-        setTags(responseJson);
         setTagItems(responseJson);
         console.log(responseJson);
     })
@@ -72,12 +52,12 @@ function HomeScreen({ navigation }) {
   }
 
   function fetchUser() {
-    fetch('http://ec2-13-57-28-56.us-west-1.compute.amazonaws.com:3000/users', {
+    fetch(`${URLS.serverUrl}/users/${firebase.auth().currentUser.uid}`, {
         method: 'GET',
     })
     .then((response) => response.json())
     .then((responseJson) => {
-        setUser(responseJson);
+        setUser(responseJson[0]);
         console.log(responseJson);
     })
     .then(() => updateRadiusSearch('5')) // default radius is 5km
@@ -90,8 +70,8 @@ function HomeScreen({ navigation }) {
     setSearch(search);
     // update the list of stores
     setListItems(() => {
-      let storeList = stores.filter(item =>
-        withinRadius.filter(inRad => inRad.storeID == item.storeID).length > 0 &&
+      let storeList = storesWithinRadius.filter(item =>
+        storesWithinRadius.filter(inRad => inRad.storeID == item.storeID).length > 0 &&
         (item.description.toLowerCase().includes(search.toLowerCase()) ||
         item.name.toLowerCase().includes(search.toLowerCase()))
       );
@@ -101,20 +81,22 @@ function HomeScreen({ navigation }) {
 
   function updateRadiusSearch(radius) {
     if (radius !== "") {
-      let radiusUrl = encodeURIComponent(user.address);
-      fetch(`http://ec2-13-57-28-56.us-west-1.compute.amazonaws.com:3000/stores/${radius}/${radiusUrl}`, {
+      let addressUrl = encodeURIComponent(user.address);
+      fetch(`${URLS.serverUrl}/stores/${radius}/${addressUrl}`, {
           method: 'GET'
       })
       .then(response => response.json())
       .then(responseJson => {
-        setWithinRadius(responseJson);
+        setStoresWithinRadius(responseJson);
+        return responseJson;
       })
-      .then(() => {
+      .then((stores) => {
         // update the list of stores
         console.log("updating radius search");
+        console.log(stores);
         setListItems(() => {
           let storeList = stores.filter(item =>
-            withinRadius.filter(inRad => inRad.storeID == item.storeID).length > 0 &&
+            stores.filter(inRad => inRad.storeID == item.storeID).length > 0 &&
             (item.description.toLowerCase().includes(search.toLowerCase()) ||
             item.name.toLowerCase().includes(search.toLowerCase()))
           );
@@ -134,70 +116,65 @@ function HomeScreen({ navigation }) {
   function pickImage(name){
       if (name == 'Sweet Stand'){
         return require('../images/cake.jpg');
-      }else{
-          return require('../images/veggie.jpg');
+      } else {
+        return require('../images/veggie.jpg');
       }
   }
 
   return (
-    <View style = {{backgroundColor: '#FFFFFF', height: height, alignItems: 'center'}}>
-
-    <View style = {{flexDirection: 'row'}}>
-        
-        <Image style = {styles.name} source={require('../images/Logo_Final.png')}/>
-        <MaterialCommunityIcons name="map-marker" color= '#575757' size= {32} style={styles.locationIcon}/>
-        <Text style ={styles.locationText}>Radius:</Text>
+    <View style={{backgroundColor: '#FFFFFF', height: height, alignItems: 'center'}}>
+      <View style={{flexDirection: 'row'}}>
+        <Image style={styles.name} source={require('../images/Logo_Final.png')}/>
+        <MaterialCommunityIcons name="map-marker" color={Colours.DARK_GRAY} size={32} style={styles.locationIcon}/>
+        <Text style={styles.locationText}>Radius:</Text>
         <TextInput
           style={styles.radiusBox}
           onChangeText={(radius) => updateRadiusSearch(radius)}
           keyboardType="numeric"
-          placeholder = '5'
-        >
-        </TextInput>
+          placeholder='5'
+        ></TextInput>
         <Text style={styles.locationText}>km</Text>
-    </View>
-    <View style = {{flexDirection: 'row'}}>
+      </View>
+      <View style={{flexDirection: 'row'}}>
         <TextInput
             style={styles.searchBar}
             onChangeText={(search) => updateListItems(search)}
-            placeholder = 'Search'
-          >
-        </TextInput>
-        <MaterialCommunityIcons name="close-circle" color='#575757' size={30} style={styles.searchIcon}
-                                onPress={() => setSearch("")}/>
-    </View>
-    <View style = {styles.scrowl}>
+            placeholder='Search'
+        ></TextInput>
+        <MaterialCommunityIcons name="close-circle" color={Colours.DARK_GRAY} size={30} style={styles.searchIcon}
+                                onPress={() => setSearch("")} />
+      </View>
+      <View style={styles.tagList}>
         <FlatList
-            horizontal
-            data={tagItems}
-            extraData={tagItems}
-            keyExtractor={item => item.tagID}
-            renderItem={({item}) => (
-                <TouchableOpacity style = {colorChange[item.tagID - 1] ? styles.selectedTagRectangle : styles.tagRectangle}
-                                    onPress={()=> changeColor(item.tagID - 1)}
-                >
-                    <Text style = {colorChange[item.tagID - 1] ? styles.selectedTagName : styles.tagName }>{item.name}</Text>
-                </TouchableOpacity>
-            )}
-            />
-    </View>
-        <FlatList
-          data={listItems}
-          extraData={listItems}
-          keyExtractor={item => item.description}
+          horizontal
+          data={tagItems}
+          extraData={tagItems}
+          keyExtractor={item => item.tagID}
           renderItem={({item}) => (
-              <TouchableOpacity onPress={() => navigation.navigate('StoreFront', { storeName: item.name, desc: item.description, storeID: item.storeID })}>
-                <View style = {styles.vendorRectangle}>
-                    <Image style = {styles.image} source={pickImage(item.name)} />
-                    <View style = {{flexDirection: 'column', marginTop: 10, marginLeft: 8, alignItems: 'flex-start', width: 200}}>
-                        <Text style = {styles.vendorName}>{item.name}</Text>
-                        <Text style = {styles.vendorDescription}>{item.description}</Text>
-                    </View>
-                </View>
-              </TouchableOpacity>
+            <TouchableOpacity style={colorChange[item.tagID - 1] ? styles.selectedTagRectangle : styles.tagRectangle}
+                                onPress={()=> changeColor(item.tagID - 1)}>
+              <Text style={colorChange[item.tagID - 1] ? styles.selectedTagName : styles.tagName }>{item.name}</Text>
+            </TouchableOpacity>
           )}
         />
-  </View>
+      </View>
+      <FlatList
+        data={listItems}
+        extraData={listItems}
+        keyExtractor={item => item.description}
+        renderItem={({item}) => (
+          <TouchableOpacity onPress={() => navigation.navigate('StoreFront', { storeName: item.name, desc: item.description, storeID: item.storeID })}>
+            <View style={styles.vendorRectangle}>
+                <Image style={styles.image} source={pickImage(item.name)} />
+                <View style={{flexDirection: 'column', marginTop: 10, marginLeft: 8, alignItems: 'flex-start', width: 200}}>
+                  <Text style={styles.vendorName}>{item.name}</Text>
+                  <Text style={styles.vendorDescription}>{item.description}</Text>
+                </View>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
   );
 }
 
@@ -208,7 +185,7 @@ const styles = StyleSheet.create({
     },
     searchBar: {
       borderRadius: 10,
-      backgroundColor: '#F1EFEF',
+      backgroundColor: Colours.LIGHT_GRAY,
       width: "90%",
       height: 50,
       marginTop: 20,
@@ -222,7 +199,7 @@ const styles = StyleSheet.create({
       height: 35,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#F1EFEF',
+      backgroundColor: Colours.LIGHT_GRAY,
       borderRadius: 7,
       marginTop: 35,
       marginLeft: 5,
@@ -271,10 +248,10 @@ const styles = StyleSheet.create({
        color: '#4C6D41'
     },
     selectedTagName: {
-        fontSize:20,
+        fontSize: 20,
         alignSelf: 'center',
         paddingTop: 8,
-        color: '#FFFFFF'
+        color: Colours.WHITE
     },
     vendorRectangle: {
         height: 122,
@@ -282,16 +259,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderTopColor: '#87B676',
         borderBottomColor: '#87B676',
-        borderLeftColor: '#FFFFFF',
-        borderRightColor: '#FFFFFF',
+        borderLeftColor: Colours.WHITE,
+        borderRightColor: Colours.WHITE,
         borderWidth: 1,
         alignSelf: 'center',
         alignItems: 'flex-start',
         marginTop: -2,
         justifyContent: 'center'
     },
-    scrowl: {
-        //flexDirection: 'row',
+    tagList: {
         width: '90%',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -324,12 +300,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 80,
         marginTop: 25
-        //alignSelf: 'center',
-        //alignItems: 'center',
-        //alignContent: 'center',
-        //marginBottom: 30
     }
-
 });
 
 export default HomeScreen;
