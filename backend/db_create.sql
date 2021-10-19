@@ -3,7 +3,7 @@ CREATE DATABASE MokoDB;
 USE MokoDB;
 
 CREATE TABLE USER(
-  userID varchar(200) NOT NULL AUTO_INCREMENT,
+  userID varchar(200) NOT NULL,
   isSeller boolean NOT NULL,
   address varchar(200) NOT NULL,
   email varchar(100) NOT NULL,

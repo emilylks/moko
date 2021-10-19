@@ -9,8 +9,8 @@ const Store = function(store) {
 };
 
 Store.create = (store, result) => {
-  let fields = "userID, storeID, isSeller, address, email, phoneNUmber";
-  let values = "\"" + store.userID + "\",\"" + store.storeID + "\",\"" + store.name + "\",\"" +
+  let fields = "userID, name, description, address";
+  let values = "\"" + store.userID + "\",\"" + store.name + "\",\"" +
     store.description + "\",\"" + store.address + "\"";
 
   sql.query("INSERT INTO STORE(" + fields + ") VALUES(" + values + ")", (err,res) => {

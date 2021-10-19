@@ -13,14 +13,7 @@ router.put('/', updateStoreItemQuantity);
 router.put('/image', updateStoreImage);
 
 async function createStoreItem(req, res, next) {
-  if (!req.body.storeItemID) {
-      res.status(400).send({
-        message: "storeItemID cannot be empty!"
-      });
-  }
-
   const newStoreItem = new StoreItem({
-    storeItemID: req.body.storeItemID,
     storeID: req.body.storeID,
     name: req.body.name,
     description: req.body.description,
@@ -30,7 +23,7 @@ async function createStoreItem(req, res, next) {
     imageName: req.body.imageName
   });
 
-	StoreItem.create(newStoreItem, async (err, data) => {
+  StoreItem.create(newStoreItem, async (err, data) => {
     if (err) {
       res.status(500).send({
         message: err.message
@@ -67,7 +60,7 @@ function findStoreItemByID(req, res, next) {
 }
 
 function findItemsByStoreId(req, res, next) {
-  Store.findItemsByStoreId(req.params.storeID, (err, data) => {
+  StoreItem.findItemsByStoreId(req.params.storeID, (err, data) => {
     if (err)
       res.status(404).send({
         message: "Store not found"

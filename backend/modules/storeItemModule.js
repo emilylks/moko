@@ -12,10 +12,10 @@ const StoreItem = function(storeItem) {
 };
 
 StoreItem.create = (storeItem, result) => {
-  let fields = "storeItemID, storeID, name, description, stockQty, price, imageUrl";
-  let values = "\"" + store.storeItemID + "\",\"" + store.storeID + "\",\"" + store.name
-    + "\",\"" + store.description + "\",\"" + store.stockQty + "\",\"" + store.price +
-    "\",\"" + store.imageUrl + "\"" ;
+  let fields = "storeID, name, description, stockQty, price, imageUrl, imageName";
+  let values = "\"" + storeItem.storeID + "\",\"" + storeItem.name
+    + "\",\"" + storeItem.description + "\",\"" + storeItem.stockQty + "\",\"" + storeItem.price +
+    "\",\"" + storeItem.imageUrl + "\",\"" + storeItem.imageName +  "\"" ;
 
   sql.query("INSERT INTO STORE_ITEM(" + fields + ") VALUES(" + values + ")", (err,res) => {
       if (err) {
@@ -47,7 +47,7 @@ StoreItem.findById = (storeItemID, result) => {
 }
 
 StoreItem.findItemsByStoreId = (storeID, result) => {
-  sql.query("SELECT * FROM STORE_ITEM WHERE storeID=\"' + storeID + '\"", (err, res) => {
+  sql.query('SELECT * FROM STORE_ITEM WHERE storeID=\"' + storeID + '\"', (err, res) => {
       if (err) {
           console.log("error: ", err);
           result(err, null);
