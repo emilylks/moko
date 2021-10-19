@@ -117,8 +117,10 @@ function HomeScreen({ navigation }) {
   function pickImage(name){
       if (name == 'Sweet Stand'){
         return require('../images/cake.jpg');
-      } else {
+      } else if (name == 'Johnnys veggies') {
         return require('../images/veggie.jpg');
+      } else {
+        return require('../images/generic_storefront.png');
       }
   }
 
@@ -145,20 +147,6 @@ function HomeScreen({ navigation }) {
         <MaterialCommunityIcons name="close-circle" color={Colours.DARK_GRAY} size={30} style={styles.searchIcon}
                                 onPress={() => setSearch("")} />
       </View>
-      <View style={styles.tagList}>
-        <FlatList
-          horizontal
-          data={tagItems}
-          extraData={tagItems}
-          keyExtractor={item => item.tagID}
-          renderItem={({item}) => (
-            <TouchableOpacity style={colorChange[item.tagID - 1] ? styles.selectedTagRectangle : styles.tagRectangle}
-                                onPress={()=> changeColor(item.tagID - 1)}>
-              <Text style={colorChange[item.tagID - 1] ? styles.selectedTagName : styles.tagName }>{item.name}</Text>
-            </TouchableOpacity>
-          )}
-        />
-      </View>
       <FlatList
         data={listItems}
         extraData={listItems}
@@ -178,6 +166,23 @@ function HomeScreen({ navigation }) {
     </View>
   );
 }
+
+// SAVE FOR LATER: tag list
+/*<View style={styles.tagList}>
+  <FlatList
+    horizontal
+    data={tagItems}
+    extraData={tagItems}
+    keyExtractor={item => item.tagID}
+    renderItem={({item}) => (
+      <TouchableOpacity style={colorChange[item.tagID - 1] ? styles.selectedTagRectangle : styles.tagRectangle}
+                          onPress={()=> changeColor(item.tagID - 1)}>
+        <Text style={colorChange[item.tagID - 1] ? styles.selectedTagName : styles.tagName }>{item.name}</Text>
+      </TouchableOpacity>
+    )}
+  />
+</View>*/
+
 
 const styles = StyleSheet.create({
   content: {
@@ -213,99 +218,100 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
   searchIcon: {
-      marginTop:30,
-      marginLeft: -50
+    marginTop:30,
+    marginLeft: -50
   },
   locationIcon: {
-      marginTop: 40,
-      marginLeft: 35
+    marginTop: 40,
+    marginLeft: 35
   },
   locationText: {
-      marginTop: 50,
-      marginLeft: 5,
-      fontSize: 15,
-      fontWeight: 'bold'
+    marginTop: 50,
+    marginLeft: 5,
+    fontSize: 15,
+    fontWeight: 'bold'
   },
   tagRectangle: {
-      height: 45,
-      paddingHorizontal: 12,
-      borderRadius: 10,
-      borderColor: '#4C6D41',
-      borderWidth: 1.5,
-      marginTop: 10,
-      alignItems: 'center',
-      marginHorizontal: 10
+    height: 45,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    borderColor: Colours.DARK_GREEN,
+    borderWidth: 1.5,
+    marginTop: 10,
+    alignItems: 'center',
+    marginHorizontal: 10
   },
   selectedTagRectangle:{
-      height: 45,
-      paddingHorizontal: 12,
-      borderRadius: 10,
-      backgroundColor: '#4C6D41',
-      borderColor: '#4C6D41',
-      borderWidth: 1.5,
-      marginTop: 10,
-      alignItems: 'center',
-      marginHorizontal: 10
+    height: 45,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    backgroundColor: Colours.DARK_GREEN,
+    borderColor: Colours.DARK_GREEN,
+    borderWidth: 1.5,
+    marginTop: 10,
+    alignItems: 'center',
+    marginHorizontal: 10
   },
   tagName: {
-     fontSize:20,
-     alignSelf: 'center',
-     paddingTop: 8,
-     color: '#4C6D41'
+   fontSize:20,
+   alignSelf: 'center',
+   paddingTop: 8,
+   color: Colours.DARK_GREEN
   },
   selectedTagName: {
-      fontSize: 20,
-      alignSelf: 'center',
-      paddingTop: 8,
-      color: Colours.WHITE
+    fontSize: 20,
+    alignSelf: 'center',
+    paddingTop: 8,
+    color: Colours.WHITE
   },
   vendorRectangle: {
-      height: 122,
-      width: 350,
-      flexDirection: 'row',
-      borderTopColor: '#87B676',
-      borderBottomColor: '#87B676',
-      borderLeftColor: Colours.WHITE,
-      borderRightColor: Colours.WHITE,
-      borderWidth: 1,
-      alignSelf: 'center',
-      alignItems: 'flex-start',
-      marginTop: -2,
-      justifyContent: 'center'
+    height: 122,
+    width: 350,
+    flexDirection: 'row',
+    borderTopColor: '#87B676',
+    borderBottomColor: '#87B676',
+    borderLeftColor: Colours.WHITE,
+    borderRightColor: Colours.WHITE,
+    borderWidth: 1,
+    alignSelf: 'center',
+    alignItems: 'flex-start',
+    marginTop: -2,
+    justifyContent: 'center'
   },
   tagList: {
-      width: '90%',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      flexDirection: 'row',
-      alignItems: 'center',
-      alignContent: 'center',
-      paddingBottom: 8,
-      paddingTop: 8,
-      marginLeft: -15
+    width: '90%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignContent: 'center',
+    paddingBottom: 8,
+    paddingTop: 8,
+    marginLeft: -15
   },
   container: {
-      flex: 1,
-      paddingTop: 22
-     },
+    flex: 1,
+    paddingTop: 22
+  },
   item: {
-       padding: 10,
-       fontSize: 18,
-       height: 44,
-     },
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
   vendorName: {
-      marginTop: 10,
-      fontSize: 20,
-      fontWeight: 'bold'
+    marginTop: 10,
+    fontSize: 20,
+    fontWeight: 'bold'
   },
   vendorDescription: {
-      fontSize: 18,
-      marginTop: 10
+    fontSize: 18,
+    marginTop: 10
   },
   image: {
-      width: 100,
-      height: 80,
-      marginTop: 25
+    width: 90,
+    height: 80,
+    marginTop: 25,
+    marginRight: 10
   }
 });
 

@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Regular',
     fontSize: 30,
     fontWeight: 'bold',
-    color: 'black'
+    color: Colours.BLACK
   },
   description:{
     fontSize: 20,

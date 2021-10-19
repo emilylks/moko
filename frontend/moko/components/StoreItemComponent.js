@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   TouchableOpacity,
-  Dimensions,
   Image,
-  TextInput,
-  Button,
-  Alert
 } from 'react-native';
+import { AuthContext } from '../navigation/AuthProvider';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
+import { Colours } from '../constants/colours';
 
 function StoreItemComponent(props) {
   let navigation = props.navigation;
@@ -22,8 +18,14 @@ function StoreItemComponent(props) {
   let storeItemImage = props.itemImage;
   let edit = props.edit;
   let location = props.location;
-  const [quantity, setQuantity] = useState(0);
-
+  const { cart, setCart } = useContext(AuthContext);
+  const [quantity, setQuantity] = useState(() => {
+    if (cart.indexOf(storeItem) != -1) {
+      return storeItem.quantity;
+    } else {
+      return 0;
+    }
+  });
 
   function incrementVal() {
     props.inc(storeItem);
@@ -46,20 +48,20 @@ function StoreItemComponent(props) {
 
       {edit ?
           <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate(location, { storeItemName, storeItemImage })}>
-            <Feather name="edit-2" color={'#FFFFFF'} size={25} />
+            <Feather name="edit-2" color={Colours.WHITE} size={25} />
           </TouchableOpacity>
           :
           <View style={styles.quantityBox}>
-            <TouchableOpacity style={styles.button1} onPress={() => incrementVal()}  >
-                <MaterialCommunityIcons name="plus" color={'#4C6D41'} size={25} style={{marginLeft: -7}}/>
+            <TouchableOpacity style={styles.plusButton} onPress={() => incrementVal()}  >
+                <MaterialCommunityIcons name="plus" color={Colours.DARK_GREEN} size={25} style={{marginLeft: -7}}/>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button2} onPress={() => decrementVal()}  >
-                <MaterialCommunityIcons name="minus" color={'#4C6D41'} size={25} style={{marginLeft: 7}}/>
+            <TouchableOpacity style={styles.minusButton} onPress={() => decrementVal()}  >
+                <MaterialCommunityIcons name="minus" color={Colours.DARK_GREEN} size={25} style={{marginLeft: 7}}/>
             </TouchableOpacity>
 
-            <View style = {{width: 37, height: 35, backgroundColor: '#87B676', marginLeft: -66, alignItems: 'center', justifyContent: 'center'}}>
-                <Text style = {{fontSize: 20, fontWeight: 'bold', color: 'white'}}>{quantity}</Text>
+            <View style={styles.qtyComponent}>
+                <Text style={styles.qtyText}>{quantity}</Text>
 
             </View>
           </View>
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
     height: 110,
     borderWidth: 0.75,
     borderRadius: 10,
-    borderColor: '#87B676',
+    borderColor: Colours.LIGHT_GREEN,
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -102,34 +104,34 @@ const styles = StyleSheet.create({
     position: 'relative',
     flexDirection: 'row',
   },
-  button1: {
+  plusButton: {
     height: 35,
     width: 38,
     borderWidth: 1,
-    borderColor: '#87B676',
+    borderColor: Colours.LIGHT_GREEN,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF'
+    backgroundColor: Colours.WHITE
   },
-  button2: {
+  minusButton: {
     height: 35,
     width: 38,
     borderWidth: 1,
-    borderColor: '#87B676',
+    borderColor: Colours.LIGHT_GREEN,
     borderRadius: 10,
     marginLeft: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF'
+    backgroundColor: Colours.WHITE
   },
   editButton: {
     height: 40,
     width: 40,
     borderWidth: 1,
-    borderColor: '#87B676',
+    borderColor: Colours.LIGHT_GREEN,
     borderRadius: 10,
-    backgroundColor: '#87B676',
+    backgroundColor: Colours.LIGHT_GREEN,
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 85,
@@ -138,7 +140,7 @@ const styles = StyleSheet.create({
   editText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#FFFFFF'
+    color: Colours.WHITE
   },
   itemImage: {
     height: 75,
@@ -152,11 +154,24 @@ const styles = StyleSheet.create({
   priceInfo: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#87B676'
+    color: Colours.LIGHT_GREEN
   },
   nameInfo: {
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  qtyComponent: {
+    width: 37,
+    height: 35,
+    backgroundColor: Colours.LIGHT_GREEN,
+    marginLeft: -66,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  qtyText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: Colours.WHITE
   }
 });
 

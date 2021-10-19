@@ -8,12 +8,15 @@ export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [cart, setCart] = useState([]);
 
   return (
     <AuthContext.Provider
       value={{
         user,
         setUser,
+        cart,
+        setCart,
         login: async (email, password) => {
           await auth().signInWithEmailAndPassword(email, password)
                 .catch(e => {

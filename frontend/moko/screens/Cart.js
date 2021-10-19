@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -17,12 +17,14 @@ import {
 import { useIsFocused } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from '@react-native-firebase/app';
+import { AuthContext } from '../navigation/AuthProvider';
 import CartItem from "../components/CartItem.js";
 import { URLS } from '../constants/resources';
 import { Colours } from '../constants/colours';
 
 const { height } = Dimensions.get('window');
 function Cart({ navigation }) {
+  const { cart, setCart } = useContext(AuthContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [total, setTotal] = useState(0);
   const [cartQuantities, setCartQuantities] = useState({});
@@ -41,15 +43,12 @@ function Cart({ navigation }) {
       .then(response => response.json())
       .then(responseJson => {
         if (!Array.isArray(responseJson)) {
-          throw new Error("Could not find cart items for user");
+          console.log("Could not find cart items for user");
           return;
         }
         console.log(responseJson);
-        setCartItems(() => {
-          let map = [];
-          responseJson.forEach(item => map.push(item));
-          return map;
-        });
+        setCartItems(() => [...responseJson]);
+        setCart(() => [...responseJson]);
         setCartQuantities(() => {
           let map = {};
           responseJson.forEach(item => { map[item.storeItemID] = 0; });
@@ -87,13 +86,13 @@ function Cart({ navigation }) {
 
   function removeAllItems() {
     setCartItems([]);
+    setCart([]);
     setTotal(0);
   }
 
   function goBackToBlankCart() {
       setModalOpen(false);
       removeAllItems();
-
       navigation.navigate('Cart');
   }
 
@@ -106,9 +105,9 @@ function Cart({ navigation }) {
 
         <View style={{flexDirection: 'column'}}>
           <Image style={styles.cartEmptyImage} source={require('../images/cartEmpty.png')}/>
-          <Text style={styles.text1}>Your cart is empty</Text>
+          <Text style={styles.cartEmptyText}>Your cart is empty</Text>
           <View style={styles.descriptionTextWrapper}>
-            <Text style={styles.text2}>Looks like you haven't made your choice yet...</Text>
+            <Text style={styles.cartEmptyDescription}>Looks like you haven't made your choice yet...</Text>
           </View>
           <TouchableOpacity style={styles.startShoppingButton} onPress={() => navigation.navigate('Home')}>
             <Text style={styles.btnText}>Start Shopping</Text>
@@ -188,19 +187,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: '10%'
   },
-  text1: {
+  cartEmptyText: {
     marginTop: 40,
     fontSize: 30,
     fontFamily: 'Inter-Bold',
     alignSelf: 'center'
   },
-  text2: {
+  cartEmptyDescription: {
     marginTop: 20,
-    fontSize: 20,
-    fontFamily: 'Inter-Light',
-    alignSelf: 'center'
-  },
-  text3: {
     fontSize: 20,
     fontFamily: 'Inter-Light',
     alignSelf: 'center'

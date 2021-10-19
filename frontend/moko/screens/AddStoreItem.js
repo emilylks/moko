@@ -13,7 +13,6 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-
 function AddStoreItem({ navigation }) {
   const { height } = Dimensions.get('window');
   const [qty, onChangeQty] = useState("X");
@@ -45,7 +44,7 @@ function AddStoreItem({ navigation }) {
                   keyboardType="numeric"
           />
         </View>
-        
+
         <View style = {{flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 30}}>
           <Text style = {styles.text1}>Price: $</Text>
           <TextInput style={styles.price}
