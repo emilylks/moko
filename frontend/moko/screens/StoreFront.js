@@ -13,18 +13,13 @@ import {
   FlatList
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import StoreItemComponent from '../components/StoreItemComponent.js';
+import { URLS } from '../constants/resources';
+import { Colours } from '../constants/colours';
 
+const { height } = Dimensions.get('window');
 function StoreFront({ navigation, route }) {
-  const { height } = Dimensions.get('window');
-
-  const {storeName} = route.params;
-  const {desc} = route.params;
-  const {storeID} = route.params;
-
-  const isFocused = useIsFocused();
-
+  const { storeName, desc, storeID } = route.params;
   const [storeItems, setStoreItems] =  useState([]);
   const [userOrder, setUserOrder] = useState([]);
 
@@ -33,7 +28,7 @@ function StoreFront({ navigation, route }) {
   }, []);
 
   function fetchItems() {
-    fetch(`http://ec2-13-57-28-56.us-west-1.compute.amazonaws.com:3000/store_items/by_store/${storeID}`, {
+    fetch(`${URLS.serverUrl}/store_items/by_store/${storeID}`, {
         method: 'GET',
     })
     .then((response) => response.json())
@@ -68,7 +63,7 @@ function StoreFront({ navigation, route }) {
   };
 
   function updateCart(item, quantity) {
-    fetch(`http://ec2-13-57-28-56.us-west-1.compute.amazonaws.com:3000/cart_items`, {
+    fetch(`${URLS.serverUrl}/cart_items`, {
         method: 'PUT',
         body: {
           userID: item.userID,
@@ -87,74 +82,66 @@ function StoreFront({ navigation, route }) {
     .catch(error => console.error(error));
   }
 
-function chooseImage(name){
-  if (name=='Celery'){
+function chooseImage(name) {
+  if (name == 'Celery') {
     return require('../images/celetry.jpg');
-  } 
-
-  if (name=='Lettuce'){
+  } else if (name == 'Lettuce') {
     return require('../images/lettuce.jpg');
-  }
-
-  if (name=='Tomatoes'){
+  } else if (name == 'Tomatoes') {
     return require('../images/tomato.jpg');
-  }
-  if (name=='Cucumbers'){
+  } else if (name == 'Cucumbers') {
     return require('../images/cucumber.jpg');
-  }
-  if (name == 'Apples'){
+  } else if (name == 'Apples') {
     return require('../images/apples.jpg');
-  }
-  if (name == 'Chocolate Chip Cookie'){
+  } else if (name == 'Chocolate Chip Cookie') {
     return require('../images/cookie.jpg');
-  }
-  if (name == 'Banana Bread'){
+  } else if (name == 'Banana Bread') {
     return require('../images/banana.jpg');
-  }
-  if (name == 'Vanilla Cupcake'){
+  } else if (name == 'Vanilla Cupcake') {
     return require('../images/cupcake.jpg');
+  } else {
+    return require('../images/generic_product_image.jpeg');
   }
 }
 
   return (
-    <View style = {{backgroundColor: '#FFFFFF', height: height, alignItems: 'center'}}>
-        <MaterialCommunityIcons name="chevron-left" color='#575757' size={40} style={styles.backBut} onPress={() => navigation.navigate('HomeScreen') }/>
-        <Text style={styles.name}>{storeName}</Text>
-        <Text style={styles.description}>{desc}</Text>
+    <View style = {styles.content}>
+      <Text style={styles.name}>{storeName}</Text>
+      <Text style={styles.description}>{desc}</Text>
 
-        <FlatList
-          data={storeItems}
-          extraData={storeItems}
-          numColumns={2}
-          style={{marginBottom: 40}}
-          keyExtractor={item => item.storeItemID}
-          renderItem={({ item }) => (
-            <StoreItemComponent inc={incrementVal} itemImage={chooseImage(item.name)} dec={decrementVal} storeItem={item} edit={false}/>
-          )}
-        >
-        </FlatList>
+      <FlatList
+        data={storeItems}
+        extraData={storeItems}
+        numColumns={2}
+        style={{marginBottom: 40}}
+        keyExtractor={item => item.storeItemID}
+        renderItem={({ item }) => (
+          <StoreItemComponent inc={incrementVal} itemImage={chooseImage(item.name)} dec={decrementVal} storeItem={item} edit={false}/>
+        )}
+      >
+      </FlatList>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    name: {
-      marginTop: -40,
-      marginHorizontal: 10,
-      fontFamily: 'Inter-Regular',
-      fontSize: 30,
-      fontWeight: 'bold',
-      color: 'black'
-    },
-    backBut: {
-      marginTop: 40,
-      marginLeft: -400
-    },
-    description:{
-      fontSize: 20,
-      marginTop: 20,
-      marginBottom: 20,
-    }
+  content: {
+    backgroundColor: Colours.WHITE,
+    height: height,
+    alignItems: 'center'
+  },
+  name: {
+    marginTop: 20,
+    fontFamily: 'Inter-Regular',
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'black'
+  },
+  description:{
+    fontSize: 20,
+    marginTop: 15,
+    marginBottom: 20,
+  }
 });
 
 export default StoreFront;

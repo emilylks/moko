@@ -32,7 +32,7 @@ function Profile({ navigation }) {
 
           <TouchableOpacity style={styles.profileOption}>
               <MaterialCommunityIcons name="key" color='#575757' size={40} style={{width: 100}}/>
-              <Text style={styles.optionsText}>ChangePassword</Text>
+              <Text style={styles.optionsText}>Change Password</Text>
               <MaterialCommunityIcons name="chevron-right" color='#575757' size={35}/>
           </TouchableOpacity>
         </View>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     logout: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginTop: 50,
+      marginTop: 30,
       justifyContent: 'space-around',
     },
     logoutText:{

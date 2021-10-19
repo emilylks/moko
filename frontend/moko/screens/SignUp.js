@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
@@ -113,7 +112,7 @@ function SignUpScreen({ navigation }) {
             <TextInput
               style={styles.textInput}
               placeholder="City"
-              placeholderTextColor="black"
+              placeholderTextColor={Colours.BLACK}
               onChangeText={(city) => setCity(city)}
             />
           </View>
