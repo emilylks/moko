@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
@@ -11,76 +10,74 @@ import {
   TextInput,
   FlatList
 } from 'react-native';
-
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 function AddStoreItem({ navigation }) {
   const { height } = Dimensions.get('window');
-  const [qty, onChangeQty] = React.useState("X");
-  const [price, onChangePrice] = React.useState("X.XX");
-  const [text, onChangeText] = React.useState("add a description");
-  const [name, onChangeName] = React.useState("name")
-    return (
-      <KeyboardAwareScrollView
-      resetScrollToCoords={{ x: 0, y: 0 }}
-      scrollEnabled={false}
-      >
+  const [qty, onChangeQty] = useState("X");
+  const [price, onChangePrice] = useState("X.XX");
+  const [text, onChangeText] = useState("add a description");
+  const [name, onChangeName] = useState("name")
+  return (
+    <KeyboardAwareScrollView
+    resetScrollToCoords={{ x: 0, y: 0 }}
+    scrollEnabled={false}
+    >
       <View style = {{backgroundColor: '#FFFFFF', height: height}}>
-
-      <Text style={styles.name}>Add an Item</Text>
-
+        <Text style={styles.name}>Add an Item</Text>
         <View style = {{flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 30, marginTop: 50}}>
-                    <Text style = {styles.text1}>Item Name:</Text>
-                    <TextInput style={styles.nameEdit}
-                            onChangeText={onChangeName}
-                            value={name}
-                            placeholder="name"
-                    />
-            </View>
-                <View style = {{flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 30}}>
-                    <Text style = {styles.text1}>Qty:</Text>
-                    <TextInput style={styles.qty}
-                            onChangeText={onChangeQty}
-                            value={qty}
-                            placeholder="X"
-                            keyboardType="numeric"
-                    />
-                </View>
+          <Text style = {styles.text1}>Item Name:</Text>
+          <TextInput style={styles.nameEdit}
+                  onChangeText={onChangeName}
+                  value={name}
+                  placeholder="name"
+          />
+        </View>
 
-                <View style = {{flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 30}}>
-                    <Text style = {styles.text1}>Price: $</Text>
-                    <TextInput style={styles.price}
-                            onChangeText={onChangePrice}
-                            value={price}
-                            placeholder="X.XX"
-                            keyboardType="numeric"
-                    />
-                </View>
+        <View style = {{flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 30}}>
+          <Text style = {styles.text1}>Qty:</Text>
+          <TextInput style={styles.qty}
+                  onChangeText={onChangeQty}
+                  value={qty}
+                  placeholder="X"
+                  keyboardType="numeric"
+          />
+        </View>
+        
+        <View style = {{flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 30}}>
+          <Text style = {styles.text1}>Price: $</Text>
+          <TextInput style={styles.price}
+                  onChangeText={onChangePrice}
+                  value={price}
+                  placeholder="X.XX"
+                  keyboardType="numeric"
+          />
+        </View>
 
-                <View style = {{flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 30}}>
-                    <Text style = {styles.text1}>Description:</Text>
-                    <TextInput style={styles.desc}
-                            onChangeText={onChangeText}
-                            value={text}
-                            placeholder="add a description of your product"
-                    />
-                </View>
+        <View style = {{flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 30}}>
+          <Text style = {styles.text1}>Description:</Text>
+          <TextInput style={styles.desc}
+                  onChangeText={onChangeText}
+                  value={text}
+                  placeholder="add a description of your product"
+          />
+        </View>
 
-                <View style = {{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginTop: 170}}>
-                    <TouchableOpacity style={styles.done} onPress={() =>  navigation.navigate('Store')}>
-                        <MaterialCommunityIcons name="check" color='#FFFFFF' size={50} style={{marginTop: -5}}/>
-                    </TouchableOpacity>
+        <View style = {{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginTop: 170}}>
+          <TouchableOpacity style={styles.done} onPress={() =>  navigation.navigate('Store')}>
+            <MaterialCommunityIcons name="check" color='#FFFFFF' size={50} style={{marginTop: -5}}/>
+          </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.delete} onPress={() =>  navigation.navigate('Store')}>
-                        <MaterialCommunityIcons name="trash-can-outline" color='#87B676' size={40} style={{}}/>
-                    </TouchableOpacity>
-                </View>
+          <TouchableOpacity style={styles.delete} onPress={() =>  navigation.navigate('Store')}>
+            <MaterialCommunityIcons name="trash-can-outline" color='#87B676' size={40} style={{}}/>
+          </TouchableOpacity>
+        </View>
 
-            </View>
-      </KeyboardAwareScrollView>
-    );
+      </View>
+    </KeyboardAwareScrollView>
+  );
 }
 
 const styles = StyleSheet.create({

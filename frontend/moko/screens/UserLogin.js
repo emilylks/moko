@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
@@ -21,6 +20,18 @@ function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useContext(AuthContext);
+
+  function loginUser() {
+    if (email == "") {
+      Alert.alert("Please enter a valid email");
+      return;
+    } else if (password == "") {
+      Alert.alert("Please enter a password");
+      return;
+    }
+
+    login(email, password);
+  }
 
   return (
     <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={ false }>
@@ -54,7 +65,7 @@ function LoginScreen({ navigation }) {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.submitBtn} onPress={() => login(email, password)}>
+        <TouchableOpacity style={styles.submitBtn} onPress={() => loginUser()}>
           <Text style={styles.loginText}>LOG IN</Text>
         </TouchableOpacity>
 

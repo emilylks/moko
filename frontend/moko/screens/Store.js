@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   TouchableOpacity,
@@ -12,6 +10,7 @@ import {
   FlatList
 } from 'react-native';
 import StoreItemComponent from '../components/StoreItemComponent.js';
+import { Colours } from '../constants/colours';
 
 const { height } = Dimensions.get('window');
 function Store({ navigation }) {
@@ -60,7 +59,7 @@ function Store({ navigation }) {
 
   if ([...storeItems].length == 0) {
     return (
-      <View style = {{backgroundColor: '#FFFFFF', height: height}}>
+      <View style = {styles.emptyStoreContent}>
         <View style = {{flexDirection: 'row'}}>
             <Text style={styles.name}>Store</Text>
         </View>
@@ -78,7 +77,7 @@ function Store({ navigation }) {
   }
   else {
     return (
-      <View style={{flexDirection:'column', backgroundColor: '#FFFFFF', alignItems: 'center', height: height}}>
+      <View style={styles.storeContent}>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
             <Text style={styles.storeName}>Your Store Name</Text>
         </View>
@@ -91,7 +90,9 @@ function Store({ navigation }) {
           numColumns={2}
           keyExtractor={item => item.storeItemID}
           renderItem={({ item }) => (
-            <StoreItemComponent storeItem={item} storeItemName={item.name} itemImage={item.imageUrl} edit={true} location='StoreItem' navigation={navigation} />
+            <StoreItemComponent storeItem={item} storeItemName={item.name}
+                                itemImage={item.imageUrl} edit={true} location='StoreItem'
+                                navigation={navigation} />
           )}
         >
         </FlatList>
@@ -101,97 +102,106 @@ function Store({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    name: {
-        marginTop: 20,
-        marginLeft: 40,
-        marginHorizontal: 10,
-        fontFamily: 'Inter-Regular',
-        fontSize: 40
-    },
-    image: {
-        alignSelf: 'center',
-        marginTop: 120,
-        width: 300,
-        height: 250
-    },
-    text1: {
-        marginTop: 20,
-        fontSize: 30,
-        fontFamily: 'Inter-Bold',
-        alignSelf: 'center'
-    },
-    text2: {
-        marginTop: 20,
-        fontSize: 20,
-        fontFamily: 'Inter-Light',
-        alignSelf: 'center'
-    },
-    text3: {
-        fontSize: 20,
-        fontFamily: 'Inter-Light',
-        alignSelf: 'center'
-    },
-    btn:{
-        height:55,
-        alignItems:"center",
-        justifyContent:"center",
-        marginTop:50,
-        backgroundColor:"#87B676",
-        width: "70%",
-        borderRadius:15,
-        alignSelf: 'center',
-        marginBottom: 20,
-      },
-      btnText: {
-        height: 50,
-        flex: 1,
-        padding: 10,
-        alignSelf: 'center',
-        alignItems: "center",
-        alignContent: 'center',
-        color: 'white',
-        fontSize: 20,
-        fontFamily: 'Inter-Regular'
-      },
-      storeName:{
-        textAlign: 'center',
-        fontSize: 25,
-        fontWeight: 'bold',
-        marginTop: 20
-      },
-      dotBtn: {
-        height:55,
-        alignItems:"center",
-        justifyContent:"center",
-        marginTop: 30,
-        width: "80%",
-        borderRadius:15,
-        borderWidth: 2,
-        borderColor: '#DC8433',
-        borderStyle: 'dashed',
-        alignSelf: 'center',
-        marginBottom: 20,
-      },
-      dotBtnText:{
-        height: 50,
-        flex: 1,
-        padding: 10,
-        alignSelf: 'center',
-        alignItems: "center",
-        alignContent: 'center',
-        color: '#DC8433',
-        fontSize: 20,
-        fontFamily: 'Inter-Regular'
-      },
-      tag: {
-        marginTop: 20,
-        fontSize: 25,
-        color: '#4C6D41',
-        fontWeight: 'bold'
-      },
-      flatList: {
-        alignItems: 'center'
-      }
+  emptyStoreContent: {
+    backgroundColor: Colours.WHITE,
+    height: height
+  },
+  storeContent: {
+    backgroundColor: Colours.WHITE,
+    alignItems: 'center',
+    height: height
+  },
+  name: {
+    marginTop: 20,
+    marginLeft: 40,
+    marginHorizontal: 10,
+    fontFamily: 'Inter-Regular',
+    fontSize: 40
+  },
+  image: {
+    alignSelf: 'center',
+    marginTop: 120,
+    width: 300,
+    height: 250
+  },
+  text1: {
+    marginTop: 20,
+    fontSize: 30,
+    fontFamily: 'Inter-Bold',
+    alignSelf: 'center'
+  },
+  text2: {
+    marginTop: 20,
+    fontSize: 20,
+    fontFamily: 'Inter-Light',
+    alignSelf: 'center'
+  },
+  text3: {
+    fontSize: 20,
+    fontFamily: 'Inter-Light',
+    alignSelf: 'center'
+  },
+  btn: {
+    height:55,
+    alignItems:"center",
+    justifyContent:"center",
+    marginTop:50,
+    backgroundColor:"#87B676",
+    width: "70%",
+    borderRadius:15,
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+  btnText: {
+    height: 50,
+    flex: 1,
+    padding: 10,
+    alignSelf: 'center',
+    alignItems: "center",
+    alignContent: 'center',
+    color: 'white',
+    fontSize: 20,
+    fontFamily: 'Inter-Regular'
+  },
+  storeName:{
+    textAlign: 'center',
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginTop: 20
+  },
+  dotBtn: {
+    height:55,
+    alignItems:"center",
+    justifyContent:"center",
+    marginTop: 30,
+    width: "80%",
+    borderRadius:15,
+    borderWidth: 2,
+    borderColor: '#DC8433',
+    borderStyle: 'dashed',
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+  dotBtnText:{
+    height: 50,
+    flex: 1,
+    padding: 10,
+    alignSelf: 'center',
+    alignItems: "center",
+    alignContent: 'center',
+    color: '#DC8433',
+    fontSize: 20,
+    fontFamily: 'Inter-Regular'
+  },
+  tag: {
+    marginTop: 20,
+    fontSize: 25,
+    color: '#4C6D41',
+    fontWeight: 'bold'
+  },
+  flatList: {
+    alignItems: 'center'
+  }
 });
 
 export default Store;
