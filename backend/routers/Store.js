@@ -54,31 +54,28 @@ function getStoresInRadius(req, res, next) {
 
   console.log("radius search base address: " + baseAddress);
   console.log("radius search radius: " + radius);
-  Store.getAll((err, data) => {
-    if (err)
+  Store.getAll(async (err, data) => {
+    if (err) {
       res.status(500).send({
         message: err.message
       });
-    else {
-      if (cache[radius]) {
-  	console.log("got cached radius data");
- 	console.log(cache[radius]);
-        res.send(cache[radius]);
-      } else {
-	let storesInRadius = [];
-        data.forEach(async (store) => {
+    } else if (cache[radius] != undefined) {
+	console.log("sending cached data");
+	res.send(cache[radius]);
+    } else {
+	var storesInRadius = [];
+        await data.forEach(async (store) => {
           let dist = await GeoCoder.getDistanceBetweenAddresses(baseAddress, store.address);
 	  console.log("distance between addresses: " + dist);
-          if (dist >= 0 && dist <= radius) {
-	    storesInRadius.push(store);
+          if (dist > 0 && dist <= parseInt(radius)) {
+	   await storesInRadius.push(store);
 	  }
         });
 	
 	console.log("got geocoded data");
 	console.log(storesInRadius);
-        cache[radius] = storesInRadius;
+	cache[radius] = storesInRadius;
         res.send(storesInRadius);
-      }
     }
   });
 }
