@@ -22,16 +22,18 @@ function StoreItemComponent(props) {
   let storeItemImage = props.itemImage;
   let edit = props.edit;
   let location = props.location;
-  const [quantity, setQuantity] = useState(storeItem.stockQty);
+  const [quantity, setQuantity] = useState(0);
 
 
   function incrementVal() {
+    props.inc(storeItem);
     setQuantity(prevQty => prevQty + 1);
   }
 
   function decrementVal() {
+    props.dec(storeItem);
     if (quantity > 0) {
-      return setQuantity(prevQty => prevQty - 1);
+      setQuantity(prevQty => prevQty - 1);
     }
   }
 
@@ -39,7 +41,7 @@ function StoreItemComponent(props) {
     <View style={styles.component}>
        <View style={styles.mainContentBox}>
         <Image style={styles.itemImage} source={storeItemImage} />
- 
+
       </View>
 
       {edit ?
@@ -58,6 +60,7 @@ function StoreItemComponent(props) {
 
             <View style = {{width: 37, height: 35, backgroundColor: '#87B676', marginLeft: -66, alignItems: 'center', justifyContent: 'center'}}>
                 <Text style = {{fontSize: 20, fontWeight: 'bold', color: 'white'}}>{quantity}</Text>
+
             </View>
           </View>
       }

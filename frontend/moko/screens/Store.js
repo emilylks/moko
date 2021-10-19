@@ -13,24 +13,6 @@ import {
 } from 'react-native';
 import StoreItemComponent from '../components/StoreItemComponent.js';
 
-
-/*function fetchD() {
-  fetch('http://ec2-13-57-28-56.us-west-1.compute.amazonaws.com:3000/tags', {
-  method: 'GET' //Request Type
-  })
-  .then((response) => response.json()) //If response is in json then in success
-  .then((responseJson) =>  //Success
-    console.log(responseJson)
-  )
-  //If response is not in json then in error
-  .catch((error) => { //Error
-    console.error(error);
-  })
-
-  <TouchableOpacity style={styles.btn} onPress={() => fetchD()}>
-            <Text style={styles.btnText}>fetch</Text>
-  </TouchableOpacity>
-} */
 const { height } = Dimensions.get('window');
 function Store({ navigation }) {
   const [storeItems, setStoreItems] = useState([
@@ -74,7 +56,6 @@ function Store({ navigation }) {
       imageUrl: require('../images/coffee.jpg'),
       imageName: ""
     },
-    
   ]);
 
   if ([...storeItems].length == 0) {
@@ -101,8 +82,7 @@ function Store({ navigation }) {
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
             <Text style={styles.storeName}>Your Store Name</Text>
         </View>
-        <TouchableOpacity style={styles.dotBtn}>
-
+        <TouchableOpacity style={styles.dotBtn} onPress={() => navigation.navigate('AddStoreItem')}>
             <Text style={styles.dotBtnText}>+ Add Product</Text>
         </TouchableOpacity>
         <FlatList

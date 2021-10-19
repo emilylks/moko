@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "228902761836",
+    "project_id": "moko-326403",
+    "storage_bucket": "moko-326403.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228902761836:android:515f0dcfeff6e2fc14af49",
+        "android_client_info": {
+          "package_name": "com.moko"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "228902761836-mhq2pi86j7as1lj755kv600gpkg4ev7f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moko",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "228902761836-62sg0qdngicon2foau5kpuealqkihhbs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhfz4t3YtLE3RXqrFCZu582Dp-njd7-qA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "228902761836-62sg0qdngicon2foau5kpuealqkihhbs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

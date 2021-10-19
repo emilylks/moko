@@ -33,9 +33,22 @@ export default function CartItem(props) {
       }
     };
 
+    function chooseImage(name){
+        if (name == 'Chocolate Chip Cookie'){
+        return require('../images/cookie.jpg');
+      }
+      if (name == 'Banana Bread'){
+        return require('../images/banana.jpg');
+      }
+      if (name == 'Vanilla Cupcake'){
+        return require('../images/cupcake.jpg');
+      }
+    
+      };
+
     return (
             <View style = {styles.item}>
-                <Image style =  {styles.itemImage} source={require('../images/Logo.png')} />
+                <Image style =  {styles.itemImage} source={chooseImage(cartItem.name)} />
 
                 <View style = {{flexDirection: 'column', marginLeft: 10, width: 200}}>
                     <Text style = {styles.itemName}>{cartItem.name}</Text>

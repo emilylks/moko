@@ -78,13 +78,13 @@ INSERT INTO TAG(name) VALUES('Home Cooked');
 INSERT INTO TAG(name) VALUES('Desserts');
 INSERT INTO TAG(name) VALUES('Ready-made');
 
-INSERT INTO USER(userID, isSeller, address, email, phoneNumber)
+INSERT INTO USER(isSeller, address, email, phoneNumber)
   VALUES('1', true, '1580 Point W Blvd, Coppell, TX 75019', 'john@doe.com', '1234561234');
-INSERT INTO USER(userID, isSeller, address, email, phoneNumber)
+INSERT INTO USER(isSeller, address, email, phoneNumber)
   VALUES('2', true, '1575 S Belt Line Rd, Coppell, TX 75019', 'jane@doe.com', '9876543210');
 
 INSERT INTO STORE(userID, name, description, address) VALUES('1', 'Johnnys veggies', 'A friendly vegetable stand', '1580 Point W Blvd, Coppell, TX 75019');
-INSERT INTO STORE(userID, name, description, address) VALUES('2', 'Sweet Stand', 'A local homemade dessert stand', '1575 S Belt Line Rd, Coppell, TX 75019');
+INSERT INTO STORE(userID, name, description, address) VALUES('2', 'Sweet Stand', 'A local dessert stand', '1575 S Belt Line Rd, Coppell, TX 75019');
 
 INSERT INTO STORE_ITEM(storeID, name, description, stockQty, price, imageUrl, imageName)
   VALUES(1, 'Lettuce', 'Crisp head of iceberg', 10, 1.99, "", "");
