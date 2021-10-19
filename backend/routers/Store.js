@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Store = require('./../modules/storeModule.js');
+const GeoCoder = require('./../modules/geoCoder.js');
 
 // Store Routes - base route /stores
 router.post('/', createStore);
@@ -11,21 +12,14 @@ router.get('/:radius/:address', getStoresInRadius);
 let cache = {};
 
 function createStore(req, res, next) {
-  if (!req.body.storeID) {
-      res.status(400).send({
-        message: "storeID cannot be empty!"
-      });
-  }
-
   const newStore = new Store({
-    storeID: req.body.storeID,
     userID: req.body.userID,
     name: req.body.name,
     description: req.body.description,
     address: req.body.address
   });
 
-	Store.create(newStore, (err, data) => {
+  Store.create(newStore, (err, data) => {
     if (err) {
       res.status(500).send({
         message: err.message
@@ -58,6 +52,8 @@ function getStoresInRadius(req, res, next) {
   const baseAddress = req.params.address;
   const radius = req.params.radius;
 
+  console.log("radius search base address: " + baseAddress);
+  console.log("radius search radius: " + radius);
   Store.getAll((err, data) => {
     if (err)
       res.status(500).send({
@@ -65,13 +61,21 @@ function getStoresInRadius(req, res, next) {
       });
     else {
       if (cache[radius]) {
+  	console.log("got cached radius data");
+ 	console.log(cache[radius]);
         res.send(cache[radius]);
       } else {
-        let storesInRadius = data.filter(store => {
-          let dist = GeoCoder.getDistanceBetweenAddresses(baseAddress, store.address);
-          return dist >= 0 && dist <= radius;
+	let storesInRadius = [];
+        data.forEach(async (store) => {
+          let dist = await GeoCoder.getDistanceBetweenAddresses(baseAddress, store.address);
+	  console.log("distance between addresses: " + dist);
+          if (dist >= 0 && dist <= radius) {
+	    storesInRadius.push(store);
+	  }
         });
-
+	
+	console.log("got geocoded data");
+	console.log(storesInRadius);
         cache[radius] = storesInRadius;
         res.send(storesInRadius);
       }

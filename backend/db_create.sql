@@ -3,7 +3,7 @@ CREATE DATABASE MokoDB;
 USE MokoDB;
 
 CREATE TABLE USER(
-  userID int NOT NULL AUTO_INCREMENT,
+  userID varchar(200) NOT NULL,
   isSeller boolean NOT NULL,
   address varchar(200) NOT NULL,
   email varchar(100) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE USER(
 
 CREATE TABLE STORE(
   storeID int NOT NULL AUTO_INCREMENT,
-  userID int NOT NULL,
+  userID varchar(200) NOT NULL,
   name varchar(50) NOT NULL,
   description varchar(200) NOT NULL,
   address varchar(400) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE STORE_ITEM(
 );
 
 CREATE TABLE CART_ITEM(
-  userID int NOT NULL,
+  userID varchar(200) NOT NULL,
   storeItemID int NOT NULL,
   quantity int,
   price float NOT NULL CHECK (price >= 0),
@@ -57,7 +57,7 @@ CREATE TABLE TAG(
 );
 
 CREATE TABLE TAG_LOOKUP(
-  userID int,
+  userID varchar(200),
   storeID int,
   tagID int,
   FOREIGN KEY (userID) REFERENCES USER (userID),
@@ -78,13 +78,13 @@ INSERT INTO TAG(name) VALUES('Home Cooked');
 INSERT INTO TAG(name) VALUES('Desserts');
 INSERT INTO TAG(name) VALUES('Ready-made');
 
-INSERT INTO USER(isSeller, address, email, phoneNumber)
-  VALUES(true, '1580 Point W Blvd, Coppell, TX 75019', 'john@doe.com', '1234561234');
-INSERT INTO USER(isSeller, address, email, phoneNumber)
-  VALUES(true, '1575 S Belt Line Rd, Coppell, TX 75019', 'jane@doe.com', '9876543210');
+INSERT INTO USER(userID, isSeller, address, email, phoneNumber)
+  VALUES('1', true, '1580 Point W Blvd, Coppell, TX 75019', 'john@doe.com', '1234561234');
+INSERT INTO USER(userID, isSeller, address, email, phoneNumber)
+  VALUES('2', true, '1575 S Belt Line Rd, Coppell, TX 75019', 'jane@doe.com', '9876543210');
 
-INSERT INTO STORE(userID, name, description, address) VALUES(1, 'Johnnys veggies', 'A friendly vegetable stand', '1580 Point W Blvd, Coppell, TX 75019');
-INSERT INTO STORE(userID, name, description, address) VALUES(2, 'Sweet Stand', 'A local homemade dessert stand', '1575 S Belt Line Rd, Coppell, TX 75019');
+INSERT INTO STORE(userID, name, description, address) VALUES('1', 'Johnnys veggies', 'A friendly vegetable stand', '1580 Point W Blvd, Coppell, TX 75019');
+INSERT INTO STORE(userID, name, description, address) VALUES('2', 'Sweet Stand', 'A local homemade dessert stand', '1575 S Belt Line Rd, Coppell, TX 75019');
 
 INSERT INTO STORE_ITEM(storeID, name, description, stockQty, price, imageUrl, imageName)
   VALUES(1, 'Lettuce', 'Crisp head of iceberg', 10, 1.99, "", "");

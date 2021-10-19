@@ -67,7 +67,7 @@ function findStoreItemByID(req, res, next) {
 }
 
 function findItemsByStoreId(req, res, next) {
-  Store.findItemsByStoreId(req.params.storeID, (err, data) => {
+  StoreItem.findItemsByStoreId(req.params.storeID, (err, data) => {
     if (err)
       res.status(404).send({
         message: "Store not found"

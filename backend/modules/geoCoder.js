@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 const GeoCoder = function(geocoder) {
   this.coordinates = geocoder.coordinates; // coordinates is a list of objects {lattitude: , longitude: }
   this.radius = geocoder.radius;
@@ -5,16 +7,20 @@ const GeoCoder = function(geocoder) {
 
 // takes an address in string format and returns a geocoded map containing longitude and latitude
 async function getLatitudeLongitude(address) {
-  try {
-    let response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyCxiX7MWht1Sbm_7RqCO7Pk0erYpBtrgAs`, {
+    let geocodedAddress = {};
+    await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key={API_KEY}`, {
       method: 'GET',
-    }).then(response => response.json());
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+      geocodedAddress = responseJson["results"][0]; 
+    })
+    .catch(error => console.error(error));
 
     return {
-      latitude: response[0].geometry.location.lat(),
-      longitude: response[0].geometry.location.lng()
+      latitude: geocodedAddress["geometry"]["location"]["lat"],
+      longitude: geocodedAddress["geometry"]["location"]["lng"],
     };
-  } catch (err) { throw new Error("Could not get coordinates for this address"); }
 }
 
 // geocodes two address then gets the distance between then in kilometers
@@ -22,9 +28,15 @@ GeoCoder.getDistanceBetweenAddresses = async (address1, address2) => {
   try {
     let coords1 = await getLatitudeLongitude(address1);
     let coords2 = await getLatitudeLongitude(address2);
+    
+    console.log("coordinates");
+    console.log(coords1);
+    console.log(coords2);
 
-    return Math.abs(getDistance(coordinates[0], coordinates[1])) / 1000;
+    return Math.abs(getDistance(coords1, coords2)) / 1000;
   } catch (err) {
+    console.error("Caught geocoder error");
+    console.error(err);
     return -1;
   }
 }
